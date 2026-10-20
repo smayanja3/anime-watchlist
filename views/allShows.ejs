@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Full Watchlist</title>
+</head>
+
+<body>
+    <header>
+        <h2>Ani<span>Manager</span></h2>
+        <nav>
+            <ul>
+                <li><a href="/profile"> Profile</a></li>
+                <li><a href="/watchlist"> Watchlist</a></li>
+                <li><a href="/logout"> Sign Out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>My Watchlist</h1>
+
+    <a href="/watchlist/new" class="btn">+ ADD</a>
+    <!-- <div>
+        <button type="button">All</button>
+        <button type="button">Watching</button>
+        <button type="button">Plan to Watch</button>
+        <button type="button">Completed</button>
+        <button type="button">On Hold</button>
+        <button type="button">Dropped</button>
+    </div> -->
+
+<section>
+<% if (animes.length === 0) { %>
+    <p> Nothing here yet. <a href="/watchlist/new">Add a show</a>.</p>
+<% } %>
+
+<% animes.forEach((anime) => { %>
+    <a href="/watchlist/<%= anime._id %>" class="card">
+        <p class="title"><%= anime.title %></p>
+        <p class="details">
+            <!-- print the type: = Series Movie, OVA -->
+            <%= anime.type %>
+
+            <!-- print season if it has one / some are movies  -->
+            <% if (anime.season) { %>
+              · Season <%= anime.season %>  
+           <% } %>    
+
+            <!-- print epsides like 123/148 or ? if nothing entered --> 
+             · Ep <%= anime.episodesWatched %> / <%= anime.totalEpisodes || '?' %>
+
+            <!-- print status of show -->
+                · <%= anime.status %>
+             <!-- print the rating *10 -->
+              <% if (anime.rating) { %>
+                · Rating <%= anime.rating %>
+             <% } %>
+        </p>
+      <%  }) %>
+</section>
+
+</body>
+
+</html>

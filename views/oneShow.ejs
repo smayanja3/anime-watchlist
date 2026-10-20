@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title><%= anime.title %></title>
+</head>
+
+<body>
+    <header>
+        <h2>Ani<span>Manager</span></h2>
+        <nav>
+            <ul>
+                <li><a href="/profile"> Profile</a></li>
+                <li><a href="/watchlist"> Watchlist</a></li>
+                <li><a href="/logout"> Sign Out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <a href="/watchlist">← Back to watchlist</a>
+    <section class="show">
+        <span class="status <%= anime.status %>"><%= anime.status %></span>
+        <h1><%= anime.title %></h1>
+        <ul>
+            <li><span>Type </span><%= anime.type %></li>
+            <li><span>Season </span><%= anime.season || '-' %></li>
+            <li><span>Episode </span><%= anime.episodesWatched %></li>
+            <li><span> Total Episode </span><%= anime.totalEpisodes || '?' %></li>
+            <li><span>Rating </span><%= anime.rating ? `${anime.rating}/ 10` : 'Not rated' %></li>
+        </ul>
+        <h3>Notes</h3>
+        <p><%= anime.notes || 'No comment yet' %></p>
+
+        <a href="/watchlist/edit/<%= anime._id %>" class="btn">Edit</a>
+        <button>Drop/DNF</button>
+        <button id="deleteBtn" data-id="<%= anime._id %>">Delete</button>
+    </section>
+    <script src="/js/main.js" ></script>
+</body>
+
+</html>

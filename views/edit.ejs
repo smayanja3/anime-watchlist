@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title><%= anime.title %></title>
+</head>
+
+<body>
+    <header>
+        <h2>Ani<span>Manager</span></h2>
+        <nav>
+            <ul>
+                 <li><a href="/profile"> Profile</a></li>
+                <li><a href="/watchlist"> Watchlist</a></li>
+                <li><a href="/logout"> Sign Out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>Edit <%= anime.title %></h1>
+    <!-- data-id = atribute/class that stores data and sends back to main.js -->
+    <form id="editForm" data-id="<%= anime._id %>" required>
+        <label>Title<input type="text" name="title" value="<%= anime.title %>" required></label>
+
+       <div>
+            <label for="type">Type</label>
+            <select name="type" id="type">
+                <option value="Series" <%= anime.type === 'Series' ? 'selected' : '' %>>Series</option>
+                <option value="Movie" <%= anime.type === 'Movies' ? 'selected' : '' %>>Movie</option>
+                <option value="OVA" <%= anime.type === 'OVA' ? 'selected' : '' %>>OVA</option>
+            </select>
+
+            <label>Season<input type="number" name="season" min='1' value="<%= anime.season %>"></label>
+            <label>Number of Episodes<input type="number" name="totalEpisodes" min="1" value="<%= anime.totalEpisodes %>"></label>
+            <label>Episodes Watched<input type="number" name="episodesWatched" min="0" value="<%= anime.episodesWatched %>"></label>
+
+            <label for="status">Status</label>
+            <select name="status" id="status">
+                <!-- condition ? valueIfTrue : valueIfFalseß -->
+                <option value="watching" <%= anime.status === 'watched' ? 'selected' : '' %>>Watching</option>
+                <option value="planned" <%= anime.status === 'planned' ? 'selected' : '' %>>Plan to Watch</option>
+                <option value="completed" <%= anime.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                <option value="hold" <%= anime.status === 'hold' ? 'selected' : '' %>>On Hold</option>
+            </select>
+
+            <label>Rating(1-10)<input type="number" name="rating" min='1' max="10" value="<%= anime.rating %>"></label>
+        </div>
+
+        <label>Notes <textarea name="notes"><%= anime.notes %></textarea></label>
+
+        <p id="erro-message"></p>
+
+        <button type="Submit">Save Changes</button>
+        <a href="/watchlist/<%= anime._id %>">Cancel</a>
+    </form>
+
+    <script src="/js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Add New Title</title>
+</head>
+
+<body>
+    <header>
+        <h2>Ani<span>Manager</span></h2>
+        <nav>
+            <ul>
+                <li>Profile</li>
+                <li>Watchlist</li>
+                <li>Sign Out</li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>Add to watchlist</h1>
+    <form action="/watchlist" method="POST">
+        <label>Title<input type="text" name="title" placeholder="e.g Spy x Family" required></label>
+
+        <div>
+            <label for="type">Type</label>
+            <select name="type" id="type">
+                <option value="Series">Series</option>
+                <option value="Movie">Movie</option>
+                <option value="OVA">OVA</option>
+            </select>
+
+            <label>Season<input type="number" name="season" min='1' placeholder="1"></label>
+            <label>Number of Episodes<input type="number" name="totalEpisodes" min="1" placeholder="12"></label>
+            <label>Episodes Watched<input type="number" name="episodesWatched" min="0" placeholder="0"></label>
+
+            <label for="status">Status</label>
+            <select name="status" id="status">
+                <option value="watching">Watching</option>
+                <option value="planned">Plan to Watch</option>
+                <option value="completed">Completed</option>
+                <option value="hold">On Hold</option>
+            </select>
+
+            <label>Rating(1-10)<input type="number" name="rating" min='1' max="10" placeholder="optional"></label>
+        </div>
+        <label>Notes<textarea name="notes"></textarea></label>
+        <button type="submit">Add to watchlist</button>
+        <a href="/watchlist">Cancel</a>
+    </form>
+</body>
+
+</html>
