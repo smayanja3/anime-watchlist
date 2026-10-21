@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const app     = express()
 let PORT      = process.env.PORT || 3050;
 const Anime = require('./models/anime')
+const passport = require('passport')
 const bcrypt = require('bcrypt') // turns a password into a hash -> hash only works one way you cant revert back to password
 const User = require('./models/user')
 const session = require('express-session')
@@ -72,17 +73,12 @@ app.get('/login', (req, res) => {
 })
 
 app.get('/logout', (req, res) => {
-    req.session.destroy(() => {
         res.redirect('/login')
-    })
 })
 
 app.get('/profile', async (req,res) => {
-    if(!req.session.user) {
-        return res.redirect('/login')
-    }
     const watching = await Anime.find({ status: 'watching'})
-    res.render('profile', { user: req.session.user, watching })
+    res.render('profile', { user: req.user, watching })
 })
 
 //----- all shows
@@ -175,35 +171,6 @@ app.post('/signup', async (req, res) => {
         res.redirect('/signup')
     }
 })
-
-
-//---------- login
-app.post('/login', async (req, res) =>{
-    try{
-        const { username, password } = req.body
-
-        const user = await User.find({username})
-        if(!user){
-            console.log('No user with that username')
-            return res.redirect('/login')
-        }
-        const passwordMatches = await bcrypt.compare(password, user.password)
-        if(!passwordMatches) {
-            console.log('Wrong password')
-            return res.redirect('login')
-        }
-
-        req.session.user = { _id: user._id, username: user.username}
-        console.log('Logged In:', req.session.user)
-        res.redirect('/watchlist')
-    } catch(err) {
-        console.log(err.message)
-        res.redirect('/login')
-    }
-})
-
-
-
 
 
 

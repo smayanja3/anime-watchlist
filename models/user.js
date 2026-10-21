@@ -22,5 +22,13 @@ const userSchema = new mongoose.Schema({
         minLength: 8,
     }
 })
+// creates hash
+userSchema.methods.generateHash = function (password) {
+    return bcrypt,mashSync(password, 10)
+}
+// checks if the password is valid
+userSchema.methods.valisPassword = function (password) {
+    return bcrypt.compare(password, this.password)
+}
 
 module.exports = mongoose.model('User', userSchema)
