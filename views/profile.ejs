@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title><%= user.username %>'s Profile></title>
+</head>
+<body>
+    <header>
+        <h2>Ani<span>Manager</span></h2>
+        <nav>
+            <ul>
+                <li><a href="/profile"> Profile</a></li>
+                <li><a href="/watchlist"> Watchlist</a></li>
+                <li><a href="/logout"> Sign Out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1><%= user.username %></h1>
+
+   <a href="/watchlist" class="btn">Watchlist overview</a>
+   <a href="/watchlist/new" class="btn">+ Add to watchlist</a>
+
+   <h2>Currently watching</h2>
+
+   <% if (watching.length === 0) { %>
+    <p>You're not watching anything right now.</p>
+   <% } %>
+
+   <% watching.forEach((anime) => { %>
+    <a href="/watchlist/<%= anime._id %>" class="card">
+        <p class="title"><%= anime.title %></p>
+        <p class="details">Ep <%= anime.episodesWatched %> / <%=anime.totalEpisodes || '?' %></p>
+    </a>
+  <% }) %>
+
+</body>
+</html>

@@ -3,31 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Login</title>
-</head>
+</head> 
 <body>
     <header>
         <h2>Ani<span>Manager</span></h2>
         <nav>
             <ul>
-                <li>Sign Up</li>
-                <li>Register</li>
+                <li><a href="/signup"> Sign up</a></li>
             </ul>
         </nav>
     </header>
-    <div>
         <h1>Sign in</h1>
         <p>Create an account to start tracking what you watch</p>
-        <span>Username
-            <input type="text" placeholder="sakura_fan">
-        </span>
-        <span>Password
-            <input type="text" placeholder="*************">
-        </span>
-        <buton type="submit">Register</buton>
-        <div>New Here?<a href="">Create an account</a></div>
-    </div>
-    
+        <form action="/signup" method="POST">
+            <label>Username
+                <input type="text" name="username" required>
+            </label>
+            <label>Password
+                <input type="password" name="password" required>
+                <button type="submit"></button>
+            </label>
+        </form>
+    <p>New here?<a href="/signup"> Sign up</a></p>
 </body>
 </html>

@@ -5,6 +5,9 @@ const mongoose = require('mongoose')
 const app     = express()
 let PORT      = process.env.PORT || 3050;
 const Anime = require('./models/anime')
+const bcrypt = require('bcrypt') // turns a password into a hash -> hash only works one way you cant revert back to password
+const User = require('./models/user')
+const session = require('express-session')
 // const Anime = require('./models/anime')
 
 //pages are ejs files
@@ -14,6 +17,12 @@ app.use(express.static('public'))
 //read from data and put it on re.body
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false, // only saves a session when something is stored in it... so visitor who do not long in can not create db entries == saveUninitialized
+  saveUninitialized: false,
+}))
 
 //vvvv add prefix /watchlist before each route how to set up controllers????
 //app.use('watchlist', watchlistController) 
@@ -49,6 +58,33 @@ mongoose.connection.on('error', (err) => {
 
 // GET ======================================================================
 
+/////////////////////////////////////////////
+//////// RENDER SET UP PAGES ////////////////
+/////////////////////////////////////////////
+//----- signup form
+app.get('/signup', (req, res) => {
+    res.render('signup')
+})
+
+//----- login form
+app.get('/login', (req, res) => {
+    res.render('login')
+})
+
+app.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/login')
+    })
+})
+
+app.get('/profile', async (req,res) => {
+    if(!req.session.user) {
+        return res.redirect('/login')
+    }
+    const watching = await Anime.find({ status: 'watching'})
+    res.render('profile', { user: req.session.user, watching })
+})
+
 //----- all shows
 app.get('/watchlist', async (req, res) => {
     const animes = await Anime.find()
@@ -59,6 +95,9 @@ app.get('/watchlist', async (req, res) => {
 app.get('/watchlist/new', (req,res) => {
     res.render('add')
 })
+
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
 //----- ONE shows
 app.get('/watchlist/:id', async (req, res) => {
@@ -87,15 +126,15 @@ app.get('/watchlist/edit/:id', async (req, res) => {
 })
 
 
-//----- signup form
-app.get('/signup', (req, res) => {
-    res.render('signup')
-})
+// //----- signup form
+// app.get('/signup', (req, res) => {
+//     res.render('signup')
+// })
 
-//----- login form
-app.get('/login', (req, res) => {
-    res.render('login')
-})
+// //----- login form
+// app.get('/login', (req, res) => {
+//     res.render('login')
+// })
 
 
 // POST ======================================================================
@@ -113,7 +152,60 @@ app.post('/watchlist', async (req,res) => {
 })
 
 
-//----- Ssignup and login post go here later
+//---------- signup
+
+app.post('/signup', async (req, res) => {
+
+     try {
+        const { username, email, password } = req.body
+        console.log('Signing up:', username, email)
+
+        const existingUser = await User.findOne({ $or: [{ username }, { email }]}) //match if ANY condition in the list is true
+        if(existingUser) {
+            console.log('Username or email already taken')
+            return res.redirect('/signup')
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10)
+
+        await User.create({ username, email, password: hashedPassword})
+        res.redirect('/login')
+    }catch(err) {
+        console.log(err.message)
+        res.redirect('/signup')
+    }
+})
+
+
+//---------- login
+app.post('/login', async (req, res) =>{
+    try{
+        const { username, password } = req.body
+
+        const user = await User.find({username})
+        if(!user){
+            console.log('No user with that username')
+            return res.redirect('/login')
+        }
+        const passwordMatches = await bcrypt.compare(password, user.password)
+        if(!passwordMatches) {
+            console.log('Wrong password')
+            return res.redirect('login')
+        }
+
+        req.session.user = { _id: user._id, username: user.username}
+        console.log('Logged In:', req.session.user)
+        res.redirect('/watchlist')
+    } catch(err) {
+        console.log(err.message)
+        res.redirect('/login')
+    }
+})
+
+
+
+
+
 
 // PUT ======================================================================
 

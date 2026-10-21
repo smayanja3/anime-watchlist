@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <title>AniManager/Register</title>
 </head>
+
 <body>
     <header>
         <h2>Ani<span>Manager</span></h2>
         <nav>
-            <ul>
+            <!-- <ul>
                 <li>Sign Up</li>
                 <li>Register</li>
-            </ul>
+            </ul> -->
         </nav>
     </header>
     <div>
         <h1>Welcome to AniManager</h1>
         <p>Create an account to start tracking what you watch</p>
-        <span>
-            <input type="text" placeholder="sakura_fan">
-        </span>
-        <span>
-            <input type="text" placeholder="sakura@example.com">
-        </span>
-        <span>
-            <input type="text" placeholder="*************">
-        </span>
-        <buton type="submit">Register</buton>
-        <div>Already have an account? <a href="">Sign in</a></div>
-    </div>
-    
+        <form action="/signup" method="POST">
+            <label>Username
+                <input type="text" name="username" placeholder="sakura_fan">
+            </label>
+            <label>Email
+                <input type="text" name="email" placeholder="sakura@example.com">
+            </label>
+            <!-- have to make password type password so its not viable -->
+            <label>Password
+                <input type="password" name="password" placeholder="*************">
+            </label>
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account?<a href="/login"> Sign in</a></p>
+
 </body>
+
 </html>
