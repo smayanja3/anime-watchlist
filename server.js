@@ -210,7 +210,7 @@ app.get('/logout', (req, res, next) => {
 //-------- profile (only for logged in users)
 app.get('/profile', isLoggedIn, (req, res) => {
     // added owner - anime i own and i watched
-    Anime.find({ owner: req.user._id, status: 'watching' })
+    Anime.find({ owner: req.user._id })
                         // ^^^^^ value in the db
              //vvvv variable name = i made up           
         .then(watching => {

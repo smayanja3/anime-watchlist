@@ -10,7 +10,7 @@
 
 <body>
     <header>
-        <h2>Ani<span>Manager</span></h2>
+         <h2 class="logo">Ani<span>Manager</span></h2>
         <nav>
             <ul>
                 <li>Profile</li>
@@ -23,8 +23,8 @@
     <h1>Add to watchlist</h1>
     <form action="/watchlist" method="POST">
         <label>Title<input type="text" name="title" placeholder="e.g Spy x Family" required></label>
-
-        <div>
+<main>
+        <div> 
             <label for="type">Type</label>
             <select name="type" id="type">
                 <option value="Series">Series</option>
@@ -50,6 +50,7 @@
         <button type="submit">Add to watchlist</button>
         <a href="/watchlist">Cancel</a>
     </form>
+</main>
 </body>
 
 </html>

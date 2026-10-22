@@ -1,0 +1,221 @@
+/* base colors for everything
+and this will be the main source page 
+var(--pink) <- read the value as pink the roots are css variables
+*/
+
+/* :root {
+    --page: #eef0e4; 
+    --white: #fbfbf6;
+    --text: #2f3a30;
+    --gray-text: #6b7566;
+    --border: #d9ddc9;
+
+    --green: #3e5641;
+    --cream: #eccae5;
+    --pink: #b84d72;
+    --light-pink: #f1a8be;
+
+} */
+ /* hinata colors <3 */
+:root {
+    --page: #E3E3E3;       /* light gray background */
+    --white: #F4F3F7;      /* cards and forms */
+    --text: #343854;       /* navy text */
+    --gray-text: #5E6078;  /* details */
+    --border: #C5B6D0;     /* lilac borders */
+
+    --green: #343854;      /* header: navy */
+    --cream: #E3E3E3;      /* header text: light gray */
+    --pink: #6C77B3;       /* buttons and links: periwinkle */
+    --light-pink: #C5B6D0; /* logo accent: lilac */
+}
+
+/* =========================== 
+=== BASE PAGE SET ALL PAGES ===
+============================== */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0 auto;
+    background: var(--page);
+    color: var(--text);
+    font-family: "Nunito", Arial, sans-serif;
+    line-height:1.6;
+}
+
+h1,h2,h3 {
+    font-family: "Zen Maru Gothic", Arial, sans-serif;
+    margin: 0 0 12px;
+}
+
+a{
+    color: var(--pink);
+}
+
+main{
+    max-width:900px;
+    margin:0 auto;
+    padding: 32px 16px;
+}
+
+/* =========================== 
+   === HEADER AND NAV BAR ===
+============================== */
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap:wrap;
+    padding: 14px 24px;
+    background: var(--green);
+}
+
+.logo{
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size:24px;
+    color: var(--cream);
+    text-decoration: none;
+}
+
+.logo span {
+    color: var(--light-pink);
+}
+
+nav ul {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    padding: 6px 14px;
+    border-radius: 20px;
+    color: var(--cream);
+    text-decoration: none;
+}
+
+nav a:hover{
+    background: var(--cream);
+    color: var(--green);
+}
+
+/* =========================== 
+========== BUTTONS ===========
+============================== */
+
+.btn, button {
+    display:inline;
+    padding: 10px 18px;
+    border:1pv solid var(--pink);
+    border-radius: 10px;
+    background: var(--pink);
+    color: white;
+    font-size: 15px;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.action {
+    display: flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:16px 0 24px;
+}
+
+/* =========================== 
+=========  SHOW CARDS ========
+============================== */
+
+.card-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.card {
+    background: var(--white);
+    border:1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding:16px;
+}
+
+.card:hover{
+    border-color: var(--pink);
+}
+
+.card .title {
+    margin: 0;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.card .details {
+    margin: 0;
+    color: var(--gray-text);
+    font-size: 14px;
+}
+
+
+/* =========================== 
+======= STATUS LABELS ========
+============================== */
+
+.status {
+    padding:3px 12px;
+    border:1px solid;
+    border-radius:20px;
+    font-size: 13px;
+    font-weight:bold;
+}
+
+.watching { color:#b84d72 ;}
+.planned { color: #7c68b5;}
+.completed { color: #4f7a4b;}
+.hold { color:#a46f22;}
+
+/* =========================== 
+======= FORMS ALL ============
+============================== */
+
+form{
+    margin: 0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    max-width:480px;
+    padding:24px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius:10px;
+}
+
+label{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    font-weight:bold;
+}
+
+input, select, textarea {
+    background: var(--page);
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.error, #error-message{
+    color: var(--pink);
+    font-weight: bold;
+}

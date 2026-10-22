@@ -10,7 +10,7 @@
 
 <body>
     <header>
-        <h2>Ani<span>Manager</span></h2>
+        <h2 class="logo">Ani<span>Manager</span></h2>
         <nav>
             <ul>
                  <li><a href="/profile"> Profile</a></li>
@@ -19,7 +19,7 @@
             </ul>
         </nav>
     </header>
-
+<main>
     <h1>Edit <%= anime.title %></h1>
     <!-- data-id = atribute/class that stores data and sends back to main.js -->
     <form id="editForm" data-id="<%= anime._id %>" required>
@@ -32,7 +32,7 @@
                 <option value="Movie" <%= anime.type === 'Movies' ? 'selected' : '' %>>Movie</option>
                 <option value="OVA" <%= anime.type === 'OVA' ? 'selected' : '' %>>OVA</option>
             </select>
-
+ 
             <label>Season<input type="number" name="season" min='1' value="<%= anime.season %>"></label>
             <label>Number of Episodes<input type="number" name="totalEpisodes" min="1" value="<%= anime.totalEpisodes %>"></label>
             <label>Episodes Watched<input type="number" name="episodesWatched" min="0" value="<%= anime.episodesWatched %>"></label>
@@ -56,7 +56,7 @@
         <button type="Submit">Save Changes</button>
         <a href="/watchlist/<%= anime._id %>">Cancel</a>
     </form>
-
+</main>
     <script src="/js/main.js"></script>
 </body>
 

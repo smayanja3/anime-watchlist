@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Zen+Maru+Gothic:wght@700&display=swap">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/watchlist.css">
     <title>Full Watchlist</title>
 </head>
-
+ 
 <body>
     <header>
-        <h2>Ani<span>Manager</span></h2>
+         <h2 class="logo">Ani<span>Manager</span></h2>
         <nav>
             <ul>
                 <li><a href="/profile"> Profile</a></li>
@@ -19,26 +21,20 @@
             </ul>
         </nav>
     </header>
-
+<main>
+    <div class="pageTop">
     <h1>My Watchlist</h1>
-
     <a href="/watchlist/new" class="btn">+ ADD</a>
-    <!-- <div>
-        <button type="button">All</button>
-        <button type="button">Watching</button>
-        <button type="button">Plan to Watch</button>
-        <button type="button">Completed</button>
-        <button type="button">On Hold</button>
-        <button type="button">Dropped</button>
-    </div> -->
+    </div>
 
-<section>
+<section class="cardList">
 <% if (animes.length === 0) { %>
     <p> Nothing here yet. <a href="/watchlist/new">Add a show</a>.</p>
 <% } %>
 
 <% animes.forEach((anime) => { %>
     <a href="/watchlist/<%= anime._id %>" class="card">
+        <div>
         <p class="title"><%= anime.title %></p>
         <p class="details">
             <!-- print the type: = Series Movie, OVA -->
@@ -59,8 +55,12 @@
                 · Rating <%= anime.rating %>
              <% } %>
         </p>
+    </div>
+    <span class="status <%= anime.status %>"><%= anime.status %></span>
+</a>
       <%  }) %>
 </section>
+</main>
 
 </body>
 
