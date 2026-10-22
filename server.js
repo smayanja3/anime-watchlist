@@ -2,31 +2,15 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
-const app     = express()
-let PORT      = process.env.PORT || 3050;
-const Anime = require('./models/anime')
-const passport = require('passport')
-const bcrypt = require('bcrypt') // turns a password into a hash -> hash only works one way you cant revert back to password
-const User = require('./models/user')
+const bcrypt = require('bcrypt')
 const session = require('express-session')
-// const Anime = require('./models/anime')
+const passport = require('passport')
+const flash = require('connect-flash')
+const app = express()
+let PORT = process.env.PORT || 3050;
+const Anime = require('./models/anime')
+const User = require('./models/user')
 
-//pages are ejs files
-app.set('view engine', 'ejs')
-//srves css and images files in folder
-app.use(express.static('public'))
-//read from data and put it on re.body
-app.use(express.urlencoded({extended: false}))
-app.use(express.json())
-
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false, // only saves a session when something is stored in it... so visitor who do not long in can not create db entries == saveUninitialized
-  saveUninitialized: false,
-}))
-
-//vvvv add prefix /watchlist before each route how to set up controllers????
-//app.use('watchlist', watchlistController) 
 
 // connect to MongoDb ======================================================================
 const configURL = process.env.MONGODB_URI
@@ -41,137 +25,117 @@ mongoose.connection.on('error', (err) => {
 
 
 // configure ======================================================================
+require('./config/passport')(passport) // pass passport for the config from passport.js
 
 
 // express app ======================================================================
 
+//pages are ejs files
+app.set('view engine', 'ejs')
+//srves css and images files in folder
+app.use(express.static('public'))
+//read from data and put it on re.body
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 
-//ROUTES ======================================================================
-//res
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false, // does not resave the session if nothing changed only saves after cahnges
+    saveUninitialized: false, // do not create session for non users
+}))
 
+app.use(passport.initialize())
+app.use(passport.session()) // keeps you looged in
+app.use(flash()) // flash messages stored in session
 
-
-
-// AUTH ======================================================================
-
-
+//vvvv add prefix /watchlist before each route how to set up controllers????
+//app.use('watchlist', watchlistController) 
 
 
 // GET ======================================================================
 
 /////////////////////////////////////////////
-//////// RENDER SET UP PAGES ////////////////
+//////// RENDER EMPTY FORMS  ////////////////
 /////////////////////////////////////////////
-//----- signup form
-app.get('/signup', (req, res) => {
-    res.render('signup')
-})
-
-//----- login form
-app.get('/login', (req, res) => {
-    res.render('login')
-})
-
-app.get('/logout', (req, res) => {
-        res.redirect('/login')
-})
-
-app.get('/profile', async (req,res) => {
-    const watching = await Anime.find({ status: 'watching'})
-    res.render('profile', { user: req.user, watching })
-})
 
 //----- all shows
-app.get('/watchlist', async (req, res) => {
-    const animes = await Anime.find()
-    res.render('allShows', {animes})
+app.get('/watchlist', (req, res) => {
+    Anime.find()
+        .then(animes => {
+            res.render('allShows', { animes })
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.status(500).send('Something went wrong loading the watchlist')
+        })
 })
 
-//----- empty add form
-app.get('/watchlist/new', (req,res) => {
+//----- empty add form 
+// added isLoggedIn so its protected for users ONLY
+app.get('/watchlist/new',isLoggedIn, (req, res) => {
     res.render('add')
 })
 
 /////////////////////////////////////////////
+//////// RENDER SET UP CRUD  ////////////////
 /////////////////////////////////////////////
 
 //----- ONE shows
-app.get('/watchlist/:id', async (req, res) => {
+app.get('/watchlist/:id', (req, res) => {
     // returned a boolean checking if this the a db ID
-    if(!mongoose.isValidObjectId(req.params.id)) {
+    if (!mongoose.isValidObjectId(req.params.id)) {
         return res.redirect('/watchlist')
     }
     //returns one anime by id or null
-    const anime = await Anime.findById(req.params.id)
-
-    if(!anime) {
-        return res.redirect('/watchlist')
-    }
-    res.render('oneShow', {anime})
+    Anime.findById(req.params.id)
+        .then(anime => {
+            if (!anime) {
+                return res.redirect('/watchlist')
+            }
+            res.render('oneShow', { anime })
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.redirect('/watchlist')
+        })
 })
 
 //----- shows edit form for ONE anime
-app.get('/watchlist/edit/:id', async (req, res) => {
-     // returned a boolean checking if this the a db ID
-     // /watchlist/edit/apple == could crash everything
-    if(!mongoose.isValidObjectId(req.params.id)) {
+app.get('/watchlist/edit/:id', (req, res) => {
+    // returned a boolean checking if this the a db ID
+    // /watchlist/edit/apple == could crash everything
+    if (!mongoose.isValidObjectId(req.params.id)) {
         return res.redirect('/watchlist')
     }
-    const anime = await Anime.findById(req.params.id)
-    res.render('edit', {anime})
+    Anime.findById(req.params.id)
+        .then(anime => {
+            if (!anime) {
+                return res.redirect('/watchlist')
+            }
+            res.render('edit', { anime })
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.redirect('/watchlist')
+        })
 })
-
-
-// //----- signup form
-// app.get('/signup', (req, res) => {
-//     res.render('signup')
-// })
-
-// //----- login form
-// app.get('/login', (req, res) => {
-//     res.render('login')
-// })
 
 
 // POST ======================================================================
 //----- add == save an anew anime
-app.post('/watchlist', async (req,res) => {
-  try{
+// added isLoggedIn so its protected for users ONLY
+app.post('/watchlist', isLoggedIn, (req, res) => {
+    req.body.owner = req.user._id // logged in user owns this anime
     console.log(req.body)
-    await Anime.create(req.body)
-    res.redirect('/watchlist')
-  } catch (err) {
-    console.log(err.message)
-    res.redirect('/watchlist/new')
-  }
-    //res.send('You just Got A Letter')
+    Anime.create(req.body)
+        .then(() => {
+            res.redirect('/watchlist')
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.redirect('/watchlist/new')
+        })
 })
-
-
-//---------- signup
-
-app.post('/signup', async (req, res) => {
-
-     try {
-        const { username, email, password } = req.body
-        console.log('Signing up:', username, email)
-
-        const existingUser = await User.findOne({ $or: [{ username }, { email }]}) //match if ANY condition in the list is true
-        if(existingUser) {
-            console.log('Username or email already taken')
-            return res.redirect('/signup')
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10)
-
-        await User.create({ username, email, password: hashedPassword})
-        res.redirect('/login')
-    }catch(err) {
-        console.log(err.message)
-        res.redirect('/signup')
-    }
-})
-
 
 
 // PUT ======================================================================
@@ -179,38 +143,95 @@ app.post('/signup', async (req, res) => {
 //----- edit show
 //async -> await + try -> catch err
 app.put('/watchlist/:id', async (req, res) => {
-    try{
-        console.log('Put to body:', req.body) //<- req.boy == new updated values
-        await Anime.findByIdAndUpdate(req.params.id, req.body, {runValidators: true}) // checks the model firsy = rating 11 == fail
-        res.json({message: 'Updated'})
-    }catch(err) {
-        console.log(err.message)
-        res.status(400).json({error: err.message})
-    }
+    console.log('Put to body:', req.body) //<- req.boy == new updated values
+    Anime.findByIdAndUpdate(req.params.id, req.body, { runValidators: true }) // checks the model firsy = rating 11 == fail
+        .then(() => {
+            res.json({ message: 'Updated' })
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.status(400).json({ error: err.message })
+        })
 })
 
 // DELETE ======================================================================
 //----- deleted an anime by id ONLY
 app.delete('/watchlist/:id', async (req, res) => {
-    try{
-        console.log('Deleted Show:', req.params.id)
-        await Anime.findByIdAndDelete(req.params.id)
-        res.json({message: 'Deleted'})
-    }catch(err) {
-        console.log(err.message)
-        res.status(400).json({error: err.message})
-    }
+    console.log('Deleted Show:', req.params.id)
+    Anime.findByIdAndDelete(req.params.id)
+        .then(() => {
+            res.json({ message: 'Deleted' })
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.status(400).json({ error: err.message })
+        })
+
     //i tried to do a redirect but one response can only handle one request
+})
+
+//======================================================================
+// AUTHENTICATION ======================================================
+//======================================================================
+
+//------ signup form
+//blank form
+app.get('/signup', (req, res) => {
+    res.render('signup', { message: req.flash('signupMessage') })
+})
+//process the signup form
+app.post('/signup', passport.authenticate('local-signup', {
+    successRedirect: '/profile',
+    failureRedirect: '/signup',
+    failureFlash: true,
+}))
+
+//------- login form
+//blank form
+app.get('/login', (req, res) => {
+    res.render('login', { message: req.flash('loginMessage') })
+})
+
+//process the login form
+app.post('/login', passport.authenticate('local-login', {
+    successRedirect: '/profile',
+    failureRedirect: '/login',
+    failureFlash: true,
+}))
+
+//------- logout
+app.get('/logout', (req, res, next) => {
+    req.logout((err) => {
+        if (err) return next(err)
+        res.redirect('/login')
+    })
+})
+
+//-------- profile (only for logged in users)
+app.get('/profile', isLoggedIn, (req, res) => {
+    // added owner - anime i own and i watched
+    Anime.find({ owner: req.user._id, status: 'watching' })
+                        // ^^^^^ value in the db
+             //vvvv variable name = i made up           
+        .then(watching => {
+            res.render('profile', { user: req.user, watching })
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.status(500).send('Something went wrong loading your profile')
+        })
+
 })
 
 
 
-
-
-
-
-
-
+//--------- LOGGEDIN
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next() // logg in was successful
+    }
+    res.redirect('/login') // not logged in
+}
 
 
 // launch ======================================================================

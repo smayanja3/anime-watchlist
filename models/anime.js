@@ -17,7 +17,16 @@ const animeSchema = new mongoose.Schema({
     },
     rating: { type: Number, min: 1, max: 10 }, // max and min is necessary here because itprotects the db and the html min and max prevents the user from added a negative number and or messing up the request being sent
     notes: String,
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    }
 });
 // a model handles everything  and describes what blank = 'anime' looks like in my db, nad every route used the same model.
 
-module.exports = mongoose.model('Anime', animeSchema)
+module.exports = mongoose.model('Anime', animeSchema) 
+
+/*
+Ownership = save the owner of the added shows so that when the user goes to their profile it shows only their own shows and not the whole watchlist.
+*/

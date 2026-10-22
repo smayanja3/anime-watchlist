@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -18,17 +19,16 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        timstamps: true, // atlas creates these automaticaly createdAt and updatedAt 
-        minLength: 8,
     }
 })
+ 
 // creates hash
 userSchema.methods.generateHash = function (password) {
-    return bcrypt,mashSync(password, 10)
+    return bcrypt.hashSync(password, 10)
 }
 // checks if the password is valid
-userSchema.methods.valisPassword = function (password) {
-    return bcrypt.compare(password, this.password)
+userSchema.methods.validPassword = function (password) {
+    return bcrypt.compareSync(password, this.password)
 }
 
 module.exports = mongoose.model('User', userSchema)

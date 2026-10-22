@@ -21,6 +21,11 @@
     <div>
         <h1>Welcome to AniManager</h1>
         <p>Create an account to start tracking what you watch</p>
+
+        <% if( message.length === 0) { %>
+            <p class="error"><%= message %></p>
+       <% } %>
+
         <form action="/signup" method="POST">
             <label>Username
                 <input type="text" name="username" placeholder="sakura_fan">
@@ -30,7 +35,7 @@
             </label>
             <!-- have to make password type password so its not viable -->
             <label>Password
-                <input type="password" name="password" placeholder="*************">
+                <input type="password" name="password"  minlength="8" placeholder="*************">
             </label>
             <button type="submit">Register</button>
         </form>
