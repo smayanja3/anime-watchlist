@@ -2,7 +2,7 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt') 
 const session = require('express-session')
 const passport = require('passport')
 const flash = require('connect-flash')
