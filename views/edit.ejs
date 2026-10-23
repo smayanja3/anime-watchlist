@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/edit.css">
     <title><%= anime.title %></title>
 </head>
 
@@ -19,7 +20,8 @@
             </ul>
         </nav>
     </header>
-<main>
+    
+<main id="editMain">
     <h1>Edit <%= anime.title %></h1>
     <!-- data-id = atribute/class that stores data and sends back to main.js -->
     <form id="editForm" data-id="<%= anime._id %>" required>

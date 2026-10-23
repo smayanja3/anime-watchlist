@@ -1,0 +1,9 @@
+main{
+    max-width:900px;
+    margin: 0 !important;
+    padding: 32px 16px;
+}
+
+h1{
+    text-align:center;
+}

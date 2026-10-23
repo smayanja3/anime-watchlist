@@ -130,7 +130,7 @@ app.post('/watchlist', isLoggedIn, (req, res) => {
     Anime.create(req.body)
         .then(() => {
             res.redirect('/watchlist')
-        })
+        }) 
         .catch(err => {
             console.log(err.message)
             res.redirect('/watchlist/new')

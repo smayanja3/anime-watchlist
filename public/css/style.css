@@ -146,8 +146,9 @@ nav a:hover{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    padding:16px;
+    /* gap: 16px; */
+    padding:19px;
+    margin-bottom:8px;
 }
 
 .card:hover{
@@ -213,6 +214,7 @@ input, select, textarea {
     border: 1px solid var(--border);
     border-radius: 8px;
     font-size: 15px;
+    width:100%;
 }
 
 .error, #error-message{

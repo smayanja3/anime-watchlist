@@ -8,10 +8,8 @@
 /* individual boxes for each fact section */
 .facts {
     display: flex;
-    flex-wrap: wrap;
     gap: 12px;
     list-style: none;
-    padding:0;
 }
 
 .facts li {
