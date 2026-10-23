@@ -19,14 +19,14 @@
                 <li><a href="/logout"> Sign Out</a></li>
             </ul>
         </nav>
-    </header>
+    </header> 
     
 <main id="editMain">
     <h1>Edit <%= anime.title %></h1>
     <!-- data-id = atribute/class that stores data and sends back to main.js -->
     <form id="editForm" data-id="<%= anime._id %>" required>
         <label>Title<input type="text" name="title" value="<%= anime.title %>" required></label>
-
+ 
        <div>
             <label for="type">Type</label>
             <select name="type" id="type">

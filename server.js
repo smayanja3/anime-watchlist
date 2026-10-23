@@ -98,7 +98,7 @@ app.get('/watchlist/:id', (req, res) => {
             console.log(err.message)
             res.redirect('/watchlist')
         })
-})
+}) 
 
 //----- shows edit form for ONE anime
 app.get('/watchlist/edit/:id', (req, res) => {
@@ -156,7 +156,7 @@ app.put('/watchlist/:id', async (req, res) => {
 
 // DELETE ======================================================================
 //----- deleted an anime by id ONLY
-app.delete('/watchlist/:id', async (req, res) => {
+app.delete('/watchlist/:id', (req, res) => {
     console.log('Deleted Show:', req.params.id)
     Anime.findByIdAndDelete(req.params.id)
         .then(() => {

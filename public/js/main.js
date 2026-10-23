@@ -1,7 +1,7 @@
 const editForm = document.querySelector('#editForm')
 const deleteBtn = document.querySelector('#deleteBtn')
 
-
+  
 // ---------------------- EDIT FORM  ----------------------//
 //------- PUT/ UPDATE
 if (editForm) {
