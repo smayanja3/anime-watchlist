@@ -206,7 +206,7 @@ label{
     flex-direction:column;
     gap:4px;
     font-weight:bold;
-}
+} 
 
 input, select, textarea {
     background: var(--page);
