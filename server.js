@@ -224,7 +224,6 @@ app.get('/profile', isLoggedIn, (req, res) => {
 })
 
 
-
 //--------- LOGGEDIN
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
@@ -233,6 +232,9 @@ function isLoggedIn(req, res, next) {
     res.redirect('/login') // not logged in
 }
 
+app.get('/', (req, res) => {
+  res.redirect('/login');
+});
 
 // launch ======================================================================
 
