@@ -2,7 +2,7 @@
 
 Keep track of what you're watching, what you've finished, and what's next.
 
-**Live Demo:** [[Add Render link here](https://anime-watchlist-lzj5.onrender.com/login)]
+**Live Demo:** [[Live Site/](https://anime-watchlist-lzj5.onrender.com/login)]
 
 ---
 
@@ -10,7 +10,6 @@ Keep track of what you're watching, what you've finished, and what's next.
 
 Anime Watchlist helps users organize their shows. Add an anime, give it a status (Watching, Completed, or Plan to Watch), and update it as you go. Finished a series? Mark it completed, or remove it from the list entirely.
 
-[Add anything special here: ratings, episode tracking, an anime API, etc.]
 
 ---
 
