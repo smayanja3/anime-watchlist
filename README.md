@@ -2,7 +2,7 @@
 
 Keep track of what you're watching, what you've finished, and what's next.
 
-**Live Demo:** [[Live Site/](https://anime-watchlist-lzj5.onrender.com/login)]
+**Live Demo:** [Live Site](https://anime-watchlist-lzj5.onrender.com/login)
 
 ---
 
@@ -37,8 +37,8 @@ Node.js · Express · MongoDB · Mongoose · EJS [· any API you used]
 ## 🚀 Run It Locally
 
 ```bash
-git clone https://github.com/smayanja3/[repo-name].git
-cd [repo-name]
+git clone https://github.com/smayanja3/anime-watchlist.git
+cd [anime-watchlist]
 npm install
 ```
 
