@@ -21,11 +21,12 @@
         </nav>
     </header>
 
+<!-- moved <main> up here, it used to open INSIDE the form and close outside it == broken nesting -->
+<main>
     <h1>Add to watchlist</h1>
     <form action="/watchlist" method="POST">
         <label>Title<input type="text" name="title" placeholder="e.g Spy x Family" required></label>
-<main>
-        <div> 
+        <div>
             <label for="type">Type</label>
             <select name="type" id="type">
                 <option value="Series">Series</option>
@@ -47,6 +48,8 @@
 
             <label>Rating(1-10)<input type="number" name="rating" min='1' max="10" placeholder="optional"></label>
         </div>
+        <!-- type url == the browser checks it looks like a link before sending -->
+        <label>Cover image link (optional)<input type="url" name="image" placeholder="Paste an image link (right click -> copy image address)"></label>
         <label>Notes<textarea name="notes"></textarea></label>
         <button type="submit">Add to watchlist</button>
         <a href="/watchlist">Cancel</a>

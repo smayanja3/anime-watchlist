@@ -1,7 +1,9 @@
-main{
-    max-width:900px;
-    margin: 0 !important;
-    padding: 32px 16px;
+/* ADD page
+   took out the main { margin: 0 !important } that was here,
+   it was pushing the whole page to the left. style.css centers main for every page now */
+
+:root{
+    --bg-word: "新規"; /* == new */
 }
 
 h1{

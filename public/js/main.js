@@ -20,6 +20,7 @@ if (editForm) {
             status: document.querySelector('[name="status"]').value,
             rating: document.querySelector('[name="rating"]').value,
             notes: document.querySelector('[name="notes"]').value,
+            image: document.querySelector('[name="image"]').value, // <- new: cover art link
         }
 
         console.log('sending', id, updatedAnime)

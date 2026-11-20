@@ -17,6 +17,14 @@ const animeSchema = new mongoose.Schema({
     },
     rating: { type: Number, min: 1, max: 10 }, // max and min is necessary here because itprotects the db and the html min and max prevents the user from added a negative number and or messing up the request being sent
     notes: String,
+    // cover art == a link to an image online (right click a poster -> "copy image address")
+    // we only save the LINK not the actual picture so no uploads/storage needed
+    // match == has to start with http:// or https:// so nobody can sneak in weird links
+    image: {
+        type: String,
+        trim: true,
+        match: [/^https?:\/\/.+/, 'Image has to be a link that starts with http:// or https://'],
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

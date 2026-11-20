@@ -1,0 +1,65 @@
+<!-- ONE anime card, used on the watchlist feed AND the profile
+     include it with: include('partials/card', { anime, currentUser, showStatus })
+     a partial == a piece of a page you can reuse so you only write the card once
+     showStatus == true on the profile, false on the global feed
+     it hides the personal stuff: status stamp, episodes watched, rating
+     (on the feed those only belong to whoever added it, not YOU) -->
+
+<%
+    // who added it (populate gave us owner.username in server.js)
+    // old shows might not have an owner so fall back to 'unknown'
+    const ownerName = anime.owner && anime.owner.username ? anime.owner.username : 'unknown'
+
+    // is this MY show? compare ids as strings (mongoose ids are objects)
+    const isMine = anime.owner && currentUser && String(anime.owner._id) === String(currentUser._id)
+%>
+
+<a href="/watchlist/<%= anime._id %>" class="card">
+    <!-- POSTER == middle plane, the cover art -->
+    <div class="poster">
+        <% if (anime.image) { %>
+            <!-- loading lazy == only downloads the picture when you scroll near it -->
+            <img src="<%= anime.image %>" alt="<%= anime.title %> cover art" loading="lazy">
+        <% } else { %>
+            <!-- no image? show the first letter of the title BIG instead -->
+            <span class="noPoster" aria-hidden="true"><%= anime.title.charAt(0) %></span>
+        <% } %>
+
+        <!-- status stamp sits ON TOP of the poster (front plane)
+             only shows when the page asks for it (profile yes, feed no) -->
+        <% if (showStatus) { %>
+        <span class="status <%= anime.status %>"><%= anime.status %></span>
+        <% } %>
+    </div>
+
+    <div class="cardInfo">
+        <p class="title"><%= anime.title %></p>
+        <p class="details">
+            <!-- print the type: = Series Movie, OVA -->
+            <%= anime.type %>
+
+            <!-- print season if it has one / some are movies  -->
+            <% if (anime.season) { %>
+              · S<%= anime.season %>
+            <% } %>
+
+            <!-- episodes + rating are personal too (how far THEY got, what THEY rated it)
+                 so same rule as the stamp == only on the profile -->
+            <% if (showStatus) { %>
+                <!-- print epsides like 123/148 or ? if nothing entered -->
+                · Ep <%= anime.episodesWatched %>/<%= anime.totalEpisodes || '?' %>
+
+                <!-- print the rating -->
+                <% if (anime.rating) { %>
+                  · ★ <%= anime.rating %>
+                <% } %>
+            <% } %>
+            <!-- took status out of here, the stamp on the poster already shows it -->
+        </p>
+
+        <!-- added by == whoever put it on the list, "(you)" if its yours -->
+        <p class="addedBy">
+            Added by <strong><%= ownerName %></strong><% if (isMine) { %> <span class="you">(you)</span><% } %>
+        </p>
+    </div>
+</a>

@@ -1,8 +1,17 @@
+/* WATCHLIST page == global feed
+   giant back word == 見る (watch) */
+:root{
+    --bg-word: "見る";
+}
+
+/* title on the left, + ADD button on the right */
 .pageTop{
     display: flex;
     justify-content: space-between;
-    align-items:center;
-    margin-bottom:20px;
+    align-items: flex-end; /* button lines up with the bottom of the title block */
+    flex-wrap: wrap;
+    gap: var(--space-m);
+    margin-bottom: var(--space-l);
 }
 
 h1{

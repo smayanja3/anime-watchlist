@@ -1,8 +1,15 @@
- .profileName{
-    font-size: 36px;
-    color: var(--green);
- }
+/* PROFILE page == MY watchlist
+   giant back word == 私の (mine) */
+:root{
+    --bg-word: "私の";
+}
 
- .section{
+/* username uses the same huge size as every other h1 (from style.css)
+   was 36px hard coded here */
+.profileName{
+    margin-bottom: 0;
+}
+
+.section{
     margin-top: 32px;
- }
+}

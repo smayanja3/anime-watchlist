@@ -1,33 +1,117 @@
-.show{
-    padding:24px;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius:10px;
+/* ONE SHOW page
+   giant word in the back == 記録 (record) instead of アニメ */
+:root{
+    --bg-word: "記録";
 }
 
-/* individual boxes for each fact section */
+.backLink{
+    display: inline-block;
+    margin-bottom: var(--space-m);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* the big panel
+   grid == poster column on the left, info on the right
+   if theres no poster the info just takes the whole width */
+.show{
+    display: grid;
+    grid-template-columns: minmax(0, 280px) 1fr;
+    gap: var(--space-l);
+    align-items: start;
+    padding: var(--space-l);
+    background: var(--ink-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    box-shadow: var(--shadow-card);
+}
+
+/* :has() == "if .show has NO poster inside" -> just 1 column */
+.show:not(:has(.showPoster)){
+    grid-template-columns: 1fr;
+}
+
+/* poster pokes OUT of the panel a little (negative margin)
+   + a big shadow == looks like its sitting on top (three planes!) */
+.showPoster{
+    margin-top: -56px;
+    border-radius: var(--radius-m);
+    overflow: hidden;
+    box-shadow: var(--shadow-lift);
+    transform: rotate(-2deg); /* tiny tilt like a poster pinned on a wall */
+}
+
+.showPoster img{
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+}
+
+.showInfo h1{
+    margin-top: 14px;
+}
+
+/* individual boxes for each fact section
+   big number on top, tiny label (span) above it */
 .facts {
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
     list-style: none;
+    padding: 0;
+    margin: 24px 0;
 }
 
 .facts li {
-    padding:10px 14px;
-    background: var(--page);
-    border-radius: 8px;
-    font-weight: bold;
+    padding:10px 16px;
+    background: var(--ink-high);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-s);
+    font-size: 1.1rem;
+    font-weight: 800;
 }
 
 .facts span{
     display:block;
-    font-size: 12px;
-    color: var(--gray-text);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--paper-dim);
     text-transform: uppercase;
 }
-/* DELETE BUTTON */
+
+/* the notes text */
+.notes{
+    color: var(--paper);
+    white-space: pre-line; /* keeps the line breaks they typed in the notes */
+}
+
+/* DELETE BUTTON
+   quiet on purpose, delete should NOT be the loudest thing on the page
+   only turns red-ish when you hover it == "are you sure about this?" */
 .danger{
     background:transparent;
-    color: var(--pink);
-    border-style:dashed;
+    color: var(--paper-dim);
+    border: 2px dashed var(--line);
+    box-shadow: none;
+}
+
+.danger:hover{
+    color: var(--alert);
+    border-color: var(--alert);
+    box-shadow: none;
+}
+
+/* phones == poster goes on top, smaller, no sticking out */
+@media (max-width: 640px){
+    .show{
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .showPoster{
+        max-width: 200px;
+        margin-top: 0;
+    }
 }

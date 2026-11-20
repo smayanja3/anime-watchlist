@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Zen+Maru+Gothic:wght@700&display=swap">
+    <!-- fonts link was here, style.css loads them for every page now -->
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/watchlist.css">
     <title>Full Watchlist</title>
@@ -23,42 +23,24 @@
     </header>
 <main>
     <div class="pageTop">
-    <h1>My Watchlist</h1>
-    <a href="/watchlist/new" class="btn">+ ADD</a>
+        <div>
+            <!-- this page == the GLOBAL feed, everything everyone added -->
+            <h1>Watchlist</h1>
+            <p class="subtitle">What everyone is watching</p>
+        </div>
+        <a href="/watchlist/new" class="btn">+ ADD</a>
     </div>
 
-<section class="cardList">
 <% if (animes.length === 0) { %>
     <p> Nothing here yet. <a href="/watchlist/new">Add a show</a>.</p>
 <% } %>
 
+<section class="cardList">
 <% animes.forEach((anime) => { %>
-    <a href="/watchlist/<%= anime._id %>" class="card">
-        <div>
-        <p class="title"><%= anime.title %></p>
-        <p class="details">
-            <!-- print the type: = Series Movie, OVA -->
-            <%= anime.type %>
-
-            <!-- print season if it has one / some are movies  -->
-            <% if (anime.season) { %>
-              · Season <%= anime.season %>  
-           <% } %>    
-
-            <!-- print epsides like 123/148 or ? if nothing entered --> 
-             · Ep <%= anime.episodesWatched %> / <%= anime.totalEpisodes || '?' %>
-
-            <!-- print status of show -->
-                · <%= anime.status %>
-             <!-- print the rating *10 -->
-              <% if (anime.rating) { %>
-                · Rating <%= anime.rating %>
-             <% } %>
-        </p>
-    </div>
-    <span class="status <%= anime.status %>"><%= anime.status %></span>
-</a>
-      <%  }) %>
+    <!-- the card lives in views/partials/card.ejs now (shared with profile) -->
+    <!-- showStatus false == no watching/hold stamp here, thats only true for whoever added it -->
+    <%- include('partials/card', { anime, currentUser, showStatus: false }) %>
+<% }) %>
 </section>
 </main>
 

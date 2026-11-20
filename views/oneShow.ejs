@@ -21,10 +21,27 @@
         </nav>
     </header>
 <main>
-    <a href="/watchlist">← Back to watchlist</a>
+    <a href="/watchlist" class="backLink">← Back to watchlist</a>
     <section class="show">
+        <!-- cover art on the left (only if they added one) -->
+        <% if (anime.image) { %>
+        <div class="showPoster">
+            <img src="<%= anime.image %>" alt="<%= anime.title %> cover art">
+        </div>
+        <% } %>
+
+        <div class="showInfo">
+        <!-- same rule as the feed == only show the status stamp if its YOUR show -->
+        <% if (isMine) { %>
         <span class="status <%= anime.status %>"><%= anime.status %></span>
+        <% } %>
         <h1><%= anime.title %></h1>
+
+        <!-- who added it, owner.username comes from populate in server.js -->
+        <p class="addedBy">
+            Added by <strong><%= anime.owner && anime.owner.username ? anime.owner.username : 'unknown' %></strong><% if (isMine) { %> <span class="you">(you)</span><% } %>
+        </p>
+
         <ul class="facts">
             <li><span>Type </span><%= anime.type %></li>
             <li><span>Season </span><%= anime.season || '-' %></li>
@@ -33,10 +50,21 @@
             <li><span>Rating </span><%= anime.rating ? `${anime.rating}/ 10` : 'Not rated' %></li>
         </ul>
         <h3>Notes</h3>
-        <p id="error-message"><%= anime.notes || 'No comment yet' %></p>
+        <!-- notes get their own class now, used to be id="error-message"
+             so if delete failed the error REPLACED your notes -->
+        <p class="notes"><%= anime.notes || 'No comment yet' %></p>
 
-        <a href="/watchlist/edit/<%= anime._id %>" class="btn">Edit</a>
-        <button id="deleteBtn"  class="danger" data-id="<%= anime._id %>">Delete</button>
+        <!-- empty until main.js puts an error in here -->
+        <p id="error-message"></p>
+
+        <!-- only the person who added it gets edit + delete (isMine from server.js) -->
+        <% if (isMine) { %>
+        <div class="action">
+            <a href="/watchlist/edit/<%= anime._id %>" class="btn">Edit</a>
+            <button id="deleteBtn"  class="danger" data-id="<%= anime._id %>">Delete</button>
+        </div>
+        <% } %>
+        </div>
     </section>
 </main>
     <script src="/js/main.js" ></script>

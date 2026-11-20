@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/profile.css">
-    <title><%= user.username %>'s Profile></title>
+    <title><%= user.username %>'s Profile</title>
 </head>
 <body>
     <header>
@@ -19,23 +19,29 @@
         </nav>
     </header>
 <main>
+    <!-- profile == MY watchlist, only the shows i added -->
     <h1 class="profileName"><%= user.username %></h1>
 
-   <a href="/watchlist" class="btn">Watchlist overview</a>
-   <a href="/watchlist/new" class="btn">+ Add to watchlist</a>
+   <!-- .action == puts the buttons in a row with a gap (lives in style.css) -->
+   <div class="action">
+       <a href="/watchlist/new" class="btn">+ Add to watchlist</a>
+       <a href="/watchlist" class="btnGhost">See everyone's watchlist</a>
+   </div>
 
-   <h2 class="section">My Shows</h2>
+   <!-- watching.length == how many shows i added -->
+   <h2 class="section">My Watchlist · <%= watching.length %></h2>
 
    <% if (watching.length === 0) { %>
-    <p>You're not watching anything right now.</p>
+    <p>You haven't added anything yet.</p>
    <% } %>
 
+   <section class="cardList">
    <% watching.forEach((anime) => { %>
-    <a href="/watchlist/<%= anime._id %>" class="card">
-        <p class="title"><%= anime.title %></p>
-        <p class="details">Ep <%= anime.episodesWatched %> / <%=anime.totalEpisodes || '?' %></p>
-    </a>
-  <% }) %>
+    <!-- same card as the global feed (views/partials/card.ejs) -->
+    <!-- showStatus true == these are MY shows so the stamp is MY status -->
+    <%- include('partials/card', { anime, currentUser, showStatus: true }) %>
+   <% }) %>
+   </section>
 </main>
 </body>
 </html>

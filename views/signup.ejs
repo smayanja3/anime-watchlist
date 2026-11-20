@@ -24,7 +24,8 @@
         <h1>Welcome to AniManager</h1>
         <p>Create an account to start tracking what you watch</p>
  
-        <% if( message.length === 0) { %>
+        <!-- only show the error if there IS one (was === 0 == only showed when empty) -->
+        <% if( message.length > 0) { %>
             <p class="error"><%= message %></p>
        <% } %>
 

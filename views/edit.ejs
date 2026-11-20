@@ -31,7 +31,7 @@
             <label for="type">Type</label>
             <select name="type" id="type">
                 <option value="Series" <%= anime.type === 'Series' ? 'selected' : '' %>>Series</option>
-                <option value="Movie" <%= anime.type === 'Movies' ? 'selected' : '' %>>Movie</option>
+                <option value="Movie" <%= anime.type === 'Movie' ? 'selected' : '' %>>Movie</option>
                 <option value="OVA" <%= anime.type === 'OVA' ? 'selected' : '' %>>OVA</option>
             </select>
  
@@ -42,7 +42,8 @@
             <label for="status">Status</label>
             <select name="status" id="status">
                 <!-- condition ? valueIfTrue : valueIfFalseß -->
-                <option value="watching" <%= anime.status === 'watched' ? 'selected' : '' %>>Watching</option>
+                <!-- has to match the db value EXACTLY: 'watching' not 'watched' (same for 'Movie' up top not 'Movies') -->
+                <option value="watching" <%= anime.status === 'watching' ?'selected' : '' %>>Watching</option>
                 <option value="planned" <%= anime.status === 'planned' ? 'selected' : '' %>>Plan to Watch</option>
                 <option value="completed" <%= anime.status === 'completed' ? 'selected' : '' %>>Completed</option>
                 <option value="hold" <%= anime.status === 'hold' ? 'selected' : '' %>>On Hold</option>
@@ -51,9 +52,12 @@
             <label>Rating(1-10)<input type="number" name="rating" min='1' max="10" value="<%= anime.rating %>"></label>
         </div>
 
+        <!-- || '' == if theres no image yet put nothing instead of "undefined" -->
+        <label>Cover image link (optional)<input type="url" name="image" value="<%= anime.image || '' %>" placeholder="https://..."></label>
         <label>Notes <textarea name="notes"><%= anime.notes %></textarea></label>
 
-        <p id="erro-message"></p>
+        <!-- was "erro-message" <- typo, main.js looks for "error-message" so errors never showed -->
+        <p id="error-message"></p>
 
         <button type="Submit">Save Changes</button>
         <a href="/watchlist/<%= anime._id %>">Cancel</a>
