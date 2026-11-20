@@ -21,7 +21,7 @@ Node.js · Express · MongoDB · Mongoose · EJS [· any API you used]
 
 ## 📸 Preview
 
-![Anime Watchlist](public/css/anime.png)
+![Anime Watchlist](public/css/ani.png)
 
 ---
 
