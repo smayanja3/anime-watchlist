@@ -1,66 +1,40 @@
-/* base colors for everything
-and this will be the main source page
-var(--signal) <- read the value as signal the roots are css variables
-
-the fonts get imported here so EVERY page gets them
-(before only allShows.ejs had the google fonts link so the other pages fell back to arial)
-@import has to be the very first rule in the file or it gets ignored
-*/
+/* Main stylesheet: shared colors, fonts and base styles for every page.
+   @import must stay the first rule or the browser ignores it. */
 @import url("https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Nunito:wght@400;600;700;800&display=swap");
 
-/* old theme saved just in case vvvv */
-/* :root {
-    --page: #eef0e4;
-    --white: #fbfbf6;
-    --text: #2f3a30;
-    --gray-text: #6b7566;
-    --border: #d9ddc9;
-
-    --green: #3e5641;
-    --cream: #eccae5;
-    --pink: #b84d72;
-    --light-pink: #f1a8be;
-
-} */
-
-/* ===========================
-   ===== DESIGN TOKENS ======
-==============================
-"ink and paper" = everything is dark ink or light paper
-the ONLY loud color is --signal and it ONLY means "you can click this"
-*/
+/* ===== SET UP ===== */
+/* Dark "ink" backgrounds, light "paper" text.
+   --signal is the only bright color and is only used for clickable things. */
 :root {
-    /* ink == backgrounds (darkest -> lightest) */
-    --ink: #0F1015;          /* page background */
-    --ink-raised: #181A22;   /* cards and forms sit on this (middle plane) */
-    --ink-high: #222532;     /* inputs, fact boxes, stuff inside cards */
+    /* backgrounds (darkest to lightest) */
+    --ink: #0F1015;          /* page */
+    --ink-raised: #181A22;   /* cards, forms */
+    --ink-high: #222532;     /* inputs, boxes inside cards */
     --line: #2A2C38;         /* borders */
 
-    /* paper == text */
-    --paper: #F2EEE6;        /* main text: off white */
-    --paper-dim: #9A97A6;    /* details, labels, metadata */
+    /* text */
+    --paper: #F2EEE6;        /* main text */
+    --paper-dim: #9A97A6;    /* labels, details */
 
-    /* THE signal color: vermilion like a hanko stamp
-       ONLY for buttons, links, focus and hover on clickable things */
+    /* clickable color */
     --signal: #FF4D2E;
-    --signal-deep: #9E2A14;  /* darker version for the 3D button shadow */
+    --signal-deep: #9E2A14;  /* button shadow */
 
-    /* errors are NOT the signal color, an error isnt something to click */
+    /* errors */
     --alert: #FFB199;
 
-    /* status stamp colors: muted on purpose so they dont look clickable */
-    --st-watching: #8FD3B6;  /* mint */
-    --st-planned: #B8A9F0;   /* lavender */
-    --st-completed: #A7B4C9; /* slate */
-    --st-hold: #E8C27A;      /* sand */
+    /* status colors */
+    --st-watching: #8FD3B6;
+    --st-planned: #B8A9F0;
+    --st-completed: #A7B4C9;
+    --st-hold: #E8C27A;
 
     /* fonts */
-    --font-display: "Dela Gothic One", "Arial Black", sans-serif; /* HUGE stuff only */
+    --font-display: "Dela Gothic One", "Arial Black", sans-serif; /* big headings */
     --font-body: "Nunito", Arial, sans-serif;                     /* everything else */
 
-    /* type scale: one thing huge, everything else tiny, nothing in between
-       clamp(smallest, grows with screen, biggest) */
-    --text-huge: clamp(2rem, 5vw, 3.5rem); /* was 6rem max == way too big, toned it down */
+    /* text sizes */
+    --text-huge: clamp(2rem, 5vw, 3.5rem);
     --text-big: clamp(1.4rem, 3vw, 1.9rem);
     --text-body: 1rem;
     --text-tiny: 0.75rem;
@@ -76,24 +50,18 @@ the ONLY loud color is --signal and it ONLY means "you can click this"
     --radius-s: 6px;
     --radius-m: 14px;
 
-    /* shadows = the depth between the planes
-       stacking 2 shadows (one tight one soft) looks more real than 1 */
+    /* shadows */
     --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.35);
     --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.5), 0 24px 48px rgba(0, 0, 0, 0.5);
 
-    /* motion */
-    --ease: cubic-bezier(0.2, 0.8, 0.2, 1); /* fast start, soft landing */
+    /* animation */
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
     --speed: 200ms;
 
-    /* breakpoints (for reference only, css vars dont work inside @media)
-       phone < 640px   tablet 640px - 960px   desktop > 960px */
+    /* big background word (pages can override it) */
+    --bg-word: "アニメ";
 
-    /* the giant word in the back of every page
-       each page css can swap this out (ex: watchlist.css) */
-    --bg-word: "アニメ"; /* == anime */
-
-    /* OLD NAMES vvvv the page css files (show.css, profile.css) still use these
-       so they point at the new colors for now. remove after all pages are redone */
+    /* old names still used by show.css and profile.css, remove once updated */
     --page: var(--ink);
     --white: var(--ink-raised);
     --text: var(--paper);
@@ -104,29 +72,24 @@ the ONLY loud color is --signal and it ONLY means "you can click this"
     --pink: var(--signal);
     --light-pink: var(--paper-dim);
 
-    /* tells the browser this is a dark page so dropdowns + scrollbars match */
+    /* dark scrollbars and dropdowns */
     color-scheme: dark;
 }
 
-/* ===========================
-=== BASE PAGE SET ALL PAGES ===
-============================== */
-
-*{
-    box-sizing:border-box;
+/* ===== BASE ===== */
+* {
+    box-sizing: border-box;
 }
 
-body{
-    margin:0 auto;
+body {
+    margin: 0 auto;
     min-height: 100vh;
     color: var(--paper);
     font-family: var(--font-body);
     font-size: var(--text-body);
-    line-height:1.6;
+    line-height: 1.6;
 
-    /* BACK PLANE part 1: soft glows instead of a flat color
-       the periwinkle glow is a little nod to the old hinata colors <3
-       background-attachment fixed == glow stays put when you scroll */
+    /* soft glows in the corners, fixed while scrolling */
     background:
         radial-gradient(ellipse 80% 60% at 0% 0%, rgba(108, 119, 179, 0.18), transparent 60%),
         radial-gradient(ellipse 60% 50% at 100% 100%, rgba(197, 182, 208, 0.08), transparent 60%),
@@ -134,12 +97,8 @@ body{
     background-attachment: fixed;
 }
 
-/* BACK PLANE part 2: the giant outlined word behind everything
-   ::after == a fake element css adds to the body, no html needed
-   position fixed == glued to the screen not the page
-   z-index -1 == pushed BEHIND the content
-   pointer-events none == clicks go right through it */
-body::after{
+/* big outlined word behind the page */
+body::after {
     content: var(--bg-word);
     position: fixed;
     right: -0.05em;
@@ -152,35 +111,30 @@ body::after{
     line-height: 1;
     white-space: nowrap;
 
-    /* see through letters with only a thin outline */
     color: transparent;
     -webkit-text-stroke: 1px rgba(242, 238, 230, 0.07);
 }
 
-/* highlight color when you select text */
-::selection{
+::selection {
     background: var(--signal);
     color: var(--ink);
 }
 
-/* headings
-   h1 == HUGE poster type
-   h2 / h3 == tiny labels (skipping the middle sizes on purpose) */
-h1,h2,h3 {
+/* headings: h1 is huge, h2/h3 are small labels */
+h1, h2, h3 {
     margin: 0 0 12px;
 }
 
-h1{
+h1 {
     font-family: var(--font-display);
-    font-weight: 400; /* dela gothic only has one weight, its already heavy */
+    font-weight: 400;
     font-size: var(--text-huge);
     line-height: 0.95;
     letter-spacing: -0.02em;
-    /* long titles break nicely instead of running off the screen */
     overflow-wrap: anywhere;
 }
 
-h2, h3{
+h2, h3 {
     font-family: var(--font-body);
     font-weight: 800;
     font-size: var(--text-tiny);
@@ -189,60 +143,49 @@ h2, h3{
     color: var(--paper-dim);
 }
 
-/* links == signal color because you can click them */
-a{
+a {
     color: var(--signal);
     text-underline-offset: 3px;
 }
 
-a:hover{
+a:hover {
     text-decoration-thickness: 2px;
 }
 
-main{
-    max-width:1080px; /* was 900, a little wider so 4 posters fit in a row */
-    margin:0 auto;
+main {
+    max-width: 1080px;
+    margin: 0 auto;
     padding: var(--space-l) var(--space-m) var(--space-xl);
 }
 
-/* ===========================
-   === KEYBOARD FOCUS ===
-==============================
-:focus-visible == only shows when you TAB with a keyboard, not when you click
-one style for every clickable thing so keyboard users always know where they are */
-:focus-visible{
+/* keyboard focus outline */
+:focus-visible {
     outline: 3px solid var(--signal);
     outline-offset: 3px;
 }
 
-/* ===========================
-   === HEADER AND NAV BAR ===
-==============================
-FRONT PLANE: header floats on top of everything */
-
-header{
+/* ===== HEADER AND NAV ===== */
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     gap: var(--space-s);
     padding: 14px 24px;
 
-    /* sticky == stays at the top when you scroll
-       z-index 10 == sits above the cards when they slide under it */
+    /* stays at the top when scrolling */
     position: sticky;
     top: 0;
     z-index: 10;
 
-    /* see through + blur == frosted glass, you can see the page scroll under it */
+    /* frosted glass look */
     background: rgba(15, 16, 21, 0.75);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px); /* safari */
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--line);
 }
 
-/* logo is NOT a link so it stays ink and paper (no signal color) */
-.logo{
+.logo {
     margin: 0;
     font-family: var(--font-display);
     font-weight: 400;
@@ -267,7 +210,7 @@ nav ul {
 }
 
 nav a {
-    position: relative; /* so the ::after line below can be placed inside the link */
+    position: relative;
     display: inline-block;
     padding: 6px 12px;
     color: var(--paper-dim);
@@ -277,9 +220,8 @@ nav a {
     transition: color var(--speed) var(--ease);
 }
 
-/* little signal colored line under the nav link
-   starts squished to 0 width (scaleX(0)) and grows on hover */
-nav a::after{
+/* underline that grows on hover */
+nav a::after {
     content: "";
     position: absolute;
     left: 12px;
@@ -288,31 +230,26 @@ nav a::after{
     height: 2px;
     background: var(--signal);
     transform: scaleX(0);
-    transform-origin: left; /* grows from the left side */
+    transform-origin: left;
     transition: transform var(--speed) var(--ease);
 }
 
-nav a:hover{
+nav a:hover {
     color: var(--paper);
 }
 
-nav a:hover::after{
+nav a:hover::after {
     transform: scaleX(1);
 }
 
-/* ===========================
-========== BUTTONS ===========
-==============================
-FRONT PLANE: buttons look like physical keys
-the hard shadow (no blur) under them is what makes them look raised */
-
+/* ===== BUTTONS ===== */
 .btn, button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
     padding: 12px 22px;
-    border: 2px solid var(--signal); /* was 1pv <- typo so the border never showed */
+    border: 2px solid var(--signal);
     border-radius: var(--radius-s);
     background: var(--signal);
     color: var(--ink);
@@ -321,31 +258,29 @@ the hard shadow (no blur) under them is what makes them look raised */
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    text-decoration:none;
-    cursor:pointer;
+    text-decoration: none;
+    cursor: pointer;
 
-    /* 4px right 4px down no blur == solid "side" of the key */
+    /* solid shadow makes it look like a raised key */
     box-shadow: 4px 4px 0 var(--signal-deep);
     transition:
         transform var(--speed) var(--ease),
         box-shadow var(--speed) var(--ease);
 }
 
-/* hover == button rises toward you (moves up-left, shadow gets bigger) */
 .btn:hover, button:hover {
     transform: translate(-2px, -2px);
     box-shadow: 6px 6px 0 var(--signal-deep);
 }
 
-/* active == while the mouse is held down, button gets "pressed in" */
+/* pressed in while clicking */
 .btn:active, button:active {
     transform: translate(4px, 4px);
     box-shadow: 0 0 0 var(--signal-deep);
 }
 
-/* secondary button == outline only, NOT filled
-   it turns signal color on hover (you can click it) but its quieter than the main .btn */
-.btnGhost{
+/* outline-only secondary button */
+.btnGhost {
     display: inline-flex;
     align-items: center;
     padding: 12px 22px;
@@ -360,43 +295,36 @@ the hard shadow (no blur) under them is what makes them look raised */
     transition: border-color var(--speed) var(--ease), color var(--speed) var(--ease);
 }
 
-.btnGhost:hover{
+.btnGhost:hover {
     border-color: var(--signal);
     color: var(--signal);
 }
 
-/* row of buttons with space between */
+/* row of buttons */
 .action {
     display: flex;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     align-items: center;
     gap: 14px;
-    margin:16px 0 24px;
+    margin: 16px 0 24px;
 }
 
-/* ===========================
-=========  SHOW CARDS ========
-==============================
-MIDDLE PLANE: the cards
-was .card-list but the html says cardList so it never worked
-
-auto-fill + minmax == "fit as many 200px+ columns as you can"
-so its 1 column on small screens, 2-3 on tablets, 4 on desktop */
-
-.cardList{
-    display:grid;
+/* ===== SHOW CARDS ===== */
+/* as many 200px+ columns as fit */
+.cardList {
+    display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 24px;
 }
 
 .card {
-    position: relative; /* lets stuff inside be positioned on top of the card */
+    position: relative;
     display: flex;
-    flex-direction: column; /* poster on top, words under it */
-    overflow: hidden; /* cuts the poster off at the rounded corners */
+    flex-direction: column;
+    overflow: hidden;
 
     background: var(--ink-raised);
-    border:1px solid var(--line);
+    border: 1px solid var(--line);
     border-radius: var(--radius-m);
     box-shadow: var(--shadow-card);
     color: var(--paper);
@@ -408,26 +336,21 @@ so its 1 column on small screens, 2-3 on tablets, 4 on desktop */
         border-color var(--speed) var(--ease);
 }
 
-/* card lifts up off the page on hover
-   border goes signal color because the whole card is a link */
-.card:hover{
+.card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lift);
     border-color: var(--signal);
 }
 
-/* ---- POSTER ---- */
-/* aspect-ratio 2/3 == same shape as a real anime poster
-   every card is the same height even if the pictures are different sizes */
-.poster{
-    position: relative; /* the status stamp gets placed inside this box */
+/* poster: always 2:3, image fills and crops */
+.poster {
+    position: relative;
     aspect-ratio: 2 / 3;
     background: var(--ink-high);
     overflow: hidden;
 }
 
-/* object-fit cover == fill the box and crop the extra, never stretch/squish */
-.poster img{
+.poster img {
     display: block;
     width: 100%;
     height: 100%;
@@ -435,51 +358,47 @@ so its 1 column on small screens, 2-3 on tablets, 4 on desktop */
     transition: transform 400ms var(--ease);
 }
 
-/* picture zooms in a little when you hover the card */
-.card:hover .poster img{
+.card:hover .poster img {
     transform: scale(1.05);
 }
 
-/* dark fade at the bottom of the poster so it blends into the words under it
-   ::after == fake element on top of the image, no extra html */
-.poster::after{
+/* fade at the bottom of the poster */
+.poster::after {
     content: "";
     position: absolute;
-    inset: 0; /* == top 0 right 0 bottom 0 left 0, covers the whole poster */
+    inset: 0;
     background: linear-gradient(to top, var(--ink-raised) 0%, transparent 40%);
     pointer-events: none;
 }
 
-/* no image == giant first letter of the title instead */
-.noPoster{
+/* shown when there's no image: outlined first letter */
+.noPoster {
     display: grid;
-    place-items: center; /* centers it both ways */
+    place-items: center;
     height: 100%;
     font-family: var(--font-display);
     font-size: 6rem;
     color: transparent;
-    -webkit-text-stroke: 1.5px var(--paper-dim); /* outline only, same as the back word */
+    -webkit-text-stroke: 1.5px var(--paper-dim);
 }
 
-/* status stamp floats over the poster corner (FRONT plane)
-   z-index 1 == above the image AND the dark fade */
-.poster .status{
+/* status label on the poster corner */
+.poster .status {
     position: absolute;
     top: 12px;
     left: 12px;
     z-index: 1;
-    background: rgba(15, 16, 21, 0.85); /* dark behind the text so you can read it on any image */
+    background: rgba(15, 16, 21, 0.85);
 }
 
-/* ---- WORDS UNDER THE POSTER ---- */
-.cardInfo{
+/* text under the poster */
+.cardInfo {
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* fills leftover space so "added by" lines up at the bottom of every card */
+    flex-grow: 1;
     padding: 4px 16px 16px;
 }
 
-/* anime title == big poster font */
 .card .title {
     margin: 0;
     font-family: var(--font-display);
@@ -488,7 +407,6 @@ so its 1 column on small screens, 2-3 on tablets, 4 on desktop */
     overflow-wrap: anywhere;
 }
 
-/* details == tiny like movie credits */
 .card .details {
     margin: 6px 0 0;
     color: var(--paper-dim);
@@ -498,50 +416,42 @@ so its 1 column on small screens, 2-3 on tablets, 4 on desktop */
     letter-spacing: 0.12em;
 }
 
-/* "Added by ..." at the very bottom of the card
-   margin-top auto == pushes it all the way down */
-.addedBy{
+/* "Added by" pinned to the bottom of the card */
+.addedBy {
     margin: auto 0 0;
     padding-top: 12px;
     color: var(--paper-dim);
     font-size: var(--text-tiny);
 }
 
-.addedBy strong{
+.addedBy strong {
     color: var(--paper);
 }
 
-/* "(you)" == little highlight so you can spot your own shows (not signal, its not a button) */
-.addedBy .you{
+.addedBy .you {
     color: var(--st-watching);
     font-weight: 700;
 }
 
-/* subtitle under a page title, tiny and dim */
-.subtitle{
+.subtitle {
     margin: 4px 0 0;
     color: var(--paper-dim);
     font-size: 0.9rem;
 }
 
-
-/* ===========================
-======= STATUS LABELS ========
-==============================
-looks like a stamp: square-ish corners, tilted a little
-muted colors so nobody thinks its a button */
-
+/* ===== STATUS LABELS ===== */
+/* tilted "stamp" look */
 .status {
-    flex-shrink: 0; /* dont let long titles squish the stamp */
+    flex-shrink: 0;
     display: inline-block;
     padding: 4px 10px;
-    border:2px solid; /* no color here == uses the text color below */
+    border: 2px solid; /* uses the text color */
     border-radius: var(--radius-s);
     font-size: 11px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    transform: rotate(-4deg); /* the tilt is what makes it feel stamped on */
+    transform: rotate(-4deg);
 }
 
 .watching { color: var(--st-watching); }
@@ -549,16 +459,13 @@ muted colors so nobody thinks its a button */
 .completed { color: var(--st-completed); }
 .hold { color: var(--st-hold); }
 
-/* ===========================
-======= FORMS ALL ============
-============================== */
-
-form{
+/* ===== FORMS ===== */
+form {
     margin: 0 auto;
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
     gap: 18px;
-    max-width:480px;
+    max-width: 480px;
     padding: 28px;
     background: var(--ink-raised);
     border: 1px solid var(--line);
@@ -566,10 +473,9 @@ form{
     box-shadow: var(--shadow-card);
 }
 
-/* label text == tiny uppercase, the input under it is normal size */
-label{
-    display:flex;
-    flex-direction:column;
+label {
+    display: flex;
+    flex-direction: column;
     gap: 6px;
     color: var(--paper-dim);
     font-size: var(--text-tiny);
@@ -579,15 +485,14 @@ label{
 }
 
 input, select, textarea {
-    width:100%;
+    width: 100%;
     padding: 12px;
     background: var(--ink-high);
     border: 1px solid var(--line);
     border-radius: var(--radius-s);
     color: var(--paper);
 
-    /* inputs DONT inherit fonts by default so set them here
-       and undo the uppercase they would get from the label */
+    /* inputs don't inherit fonts, and shouldn't get the label's uppercase */
     font-family: var(--font-body);
     font-size: var(--text-body);
     text-transform: none;
@@ -596,76 +501,63 @@ input, select, textarea {
     transition: border-color var(--speed) var(--ease);
 }
 
-input::placeholder, textarea::placeholder{
+input::placeholder, textarea::placeholder {
     color: var(--paper-dim);
     opacity: 0.6;
 }
 
-textarea{
+textarea {
     min-height: 110px;
-    resize: vertical; /* only drag taller, not wider (wider breaks the form) */
+    resize: vertical;
 }
 
-/* signal color when you are typing in it == you are "using" it */
-input:focus, select:focus, textarea:focus{
+input:focus, select:focus, textarea:focus {
     border-color: var(--signal);
-    outline: none; /* :focus-visible ring above still shows for keyboard */
+    outline: none;
 }
 
-input:focus-visible, select:focus-visible, textarea:focus-visible{
+input:focus-visible, select:focus-visible, textarea:focus-visible {
     outline: 2px solid var(--signal);
     outline-offset: 2px;
 }
 
-/* errors: NOT the signal color, theyre messages not buttons */
-.error, #error-message{
+.error, #error-message {
     color: var(--alert);
     font-weight: 700;
 }
 
-/* ===========================
-==== REDUCED MOTION ==========
-==============================
-some people get dizzy from movement and turn it off in their computer settings
-this turns off all the lifts/slides for them */
-@media (prefers-reduced-motion: reduce){
-    *, *::before, *::after{
-        transition-duration: 0.01ms !important; /* !important so it beats every other transition */
+/* ===== REDUCED MOTION ===== */
+/* turns off animations for users who disable motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
     }
-
     .card:hover,
     .card:hover .poster img,
     .btn:hover, button:hover,
-    .btn:active, button:active{
+    .btn:active, button:active {
         transform: none;
     }
 }
 
-/* ===========================
-==== PHONE SIZES =============
-============================== */
-@media (max-width: 640px){
-    header{
+/* ===== MOBILE ===== */
+@media (max-width: 640px) {
+    header {
         padding: 12px 16px;
     }
-
-    nav a{
+    nav a {
         padding: 6px 8px;
         font-size: 13px;
     }
-
-    /* 2 small posters side by side on phones instead of 1 giant one */
-    .cardList{
+    .cardList {
         grid-template-columns: repeat(2, 1fr);
         gap: 14px;
     }
-
-    .noPoster{
+    .noPoster {
         font-size: 4rem;
     }
-
-    form{
+    form {
         padding: 20px;
     }
 }

@@ -1,9 +1,9 @@
 <!-- ONE anime card, used on the watchlist feed AND the profile
-     include it with: include('partials/card', { anime, currentUser, showStatus })
-     a partial == a piece of a page you can reuse so you only write the card once
-     showStatus == true on the profile, false on the global feed
-     it hides the personal stuff: status stamp, episodes watched, rating
-     (on the feed those only belong to whoever added it, not YOU) -->
+    include it with: include('partials/card', { anime, currentUser, showStatus })
+     
+    showStatus == true on the profile, false on the global feed
+    it hides the personal stuff: status stamp, episodes watched, rating
+    (on the feed those only belong to whoever added it, not YOU) -->
 
 <%
     // who added it (populate gave us owner.username in server.js)

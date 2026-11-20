@@ -1,7 +1,7 @@
 /* PROFILE page == MY watchlist
    giant back word == 私の (mine) */
 :root{
-    --bg-word: "私の";
+    --bg-word: "AniManager";
 }
 
 /* username uses the same huge size as every other h1 (from style.css)

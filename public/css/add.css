@@ -3,7 +3,7 @@
    it was pushing the whole page to the left. style.css centers main for every page now */
 
 :root{
-    --bg-word: "新規"; /* == new */
+    --bg-word: "NEW"; /* == new */
 }
 
 h1{
