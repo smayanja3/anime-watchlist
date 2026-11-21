@@ -15,7 +15,7 @@ Anime Watchlist helps users organize their shows. Add an anime, give it a status
 
 ## 🛠️ Built With
 
-Node.js · Express · MongoDB · Mongoose · EJS [· any API you used]
+Node.js · Express · MongoDB · Mongoose · EJS 
 
 ---
 
